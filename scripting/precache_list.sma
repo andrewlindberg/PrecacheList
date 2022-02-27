@@ -14,6 +14,7 @@ new g_iType
 
 public plugin_init()
 {
+	register_cvar("precache_list_reapi", VERSION + " " + AUTHOR, FCVAR_SERVER|FCVAR_EXTDLL|FCVAR_UNLOGGED|FCVAR_SPONLY)
 	register_plugin(PLUGIN, VERSION, AUTHOR)
 
 	g_aResources = ArrayCreate(Data)
