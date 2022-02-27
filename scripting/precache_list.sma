@@ -3,7 +3,7 @@
 #include <reapi>
 
 #define PLUGIN "[Precache List]"
-#define VERSION "1.1"
+#define VERSION "1.2"
 #define AUTHOR "Shadows Adi"
 
 new Array:g_aResources
@@ -36,7 +36,7 @@ public plugin_cfg()
 
 public StartCount()
 {
-	g_hConPrintf = RegisterHookChain(RH_Con_Printf, "RH_ConPrintf_Post", 1)
+	g_hConPrintf = RegisterHookChain(RH_Con_Printf, "RH_ConPrintf_Post", 0)
 
 	g_iType = TypeModel
 	server_cmd("reslist model")
@@ -105,7 +105,7 @@ public StopCount()
 
 public RH_ConPrintf_Post(const szBuffer[])
 {
-	if(containi(szBuffer, "FATALIFMISSING") != -1 || containi(szBuffer, "CHECKFILE") != -1 || containi(szBuffer, "-") != -1)
+	if(CheckForPattern(szBuffer))
 	{
 		new szUnused[2], szTemp[Data]
 		parse(szBuffer, szUnused, charsmax(szUnused), szUnused, charsmax(szUnused), szUnused, charsmax(szUnused), szTemp[Resource], charsmax(szTemp[Resource]))
@@ -117,12 +117,39 @@ public RH_ConPrintf_Post(const szBuffer[])
 
 			ArrayPushArray(g_aResources, szTemp)
 		}
+
+		return HC_SUPERCEDE
 	}
+
+	if(CheckSkipStrings(szBuffer))
+	{
+		return HC_SUPERCEDE
+	}
+
+	return HC_CONTINUE
 }
 
 public plugin_end()
 {
 	ArrayDestroy(g_aResources)
+}
+
+// Check if the printed output is what we need
+CheckForPattern(const szBuffer[])
+{
+	if(containi(szBuffer, "FATALIFMISSING") != -1 || containi(szBuffer, "CHECKFILE") != -1 || containi(szBuffer, "-") != -1)
+		return true
+
+	return false
+}
+
+// Skip from showing in console rest of the lines
+CheckSkipStrings(const szBuffer[])
+{
+	if(containi(szBuffer, "Index : Filename") != -1 || containi(szBuffer, "Total") != -1 && containi(szBuffer, "'s") != -1)
+		return true
+
+	return false
 }
 
 // native precache_get_item(iNum, szItem[], iLen, iType)
