@@ -22,7 +22,7 @@ public plugin_init()
 
 public plugin_natives()
 {
-	register_library("prcache_list")
+	register_library("precache_list")
 
 	register_native("precache_get_item", "native_get_item")
 	register_native("precache_get_size", "native_get_size")
