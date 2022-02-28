@@ -3,7 +3,7 @@
 #include <reapi>
 
 #define PLUGIN "[Precache List]"
-#define VERSION "1.2"
+#define VERSION "1.3"
 #define AUTHOR "Shadows Adi"
 
 new Array:g_aResources
