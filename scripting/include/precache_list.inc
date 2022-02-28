@@ -1,9 +1,9 @@
 /* Sublime AMXX Editor v4.2 */
 
-#if defined _prcache_list_included
+#if defined _precache_list_included
 	#endinput
 #endif
-#define _prcache_list_included
+#define _precache_list_included
 
 #define MAX_RESOURCE_SIZE 25
 

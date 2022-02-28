@@ -70,7 +70,6 @@ public CountDecal()
 
 	RequestFrame("StopCount")
 
-
 	set_task(0.2, "CountGeneric")
 }
 
