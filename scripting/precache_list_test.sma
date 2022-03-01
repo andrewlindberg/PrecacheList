@@ -4,7 +4,6 @@
 #include <precache_list>
 
 #define PLUGIN  "Test API [Precache list]"
-#define VERSION "1.1"
 #define AUTHOR  "Shadows Adi"
 
 public plugin_init()
@@ -63,4 +62,9 @@ public show_precache(id)
 	}
 
 	log_to_file("debug.log", "Precached? %s", is_resource_precached("models/p_usp.mdl", TypeModel) ? "true" : "false")
+
+	if(is_resource_precached("models/p_usp.mdl", TypeModel))
+	{
+		log_to_file("debug.log", "Replaced? %s", unprecache_resource("models/p_usp.mdl", REPLACE, true, "models/p_glock18.mdl") ? "successfull" : "unsuccessfull")
+	}
 }

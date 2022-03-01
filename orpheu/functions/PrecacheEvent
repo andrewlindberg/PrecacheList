@@ -1,0 +1,17 @@
+{
+    "name" : "PrecacheEvent",
+    "library" : "engine",
+    "arguments" :
+    [
+        {
+            "type" : "int"
+        },
+		{
+			"type" : "char *"
+		}
+    ],
+    "return" :
+    {
+        "type" : "int"
+    }
+}

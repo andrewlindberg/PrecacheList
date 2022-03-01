@@ -3,7 +3,6 @@
 #include <reapi>
 
 #define PLUGIN "[Precache List]"
-#define VERSION "1.3"
 #define AUTHOR "Shadows Adi"
 
 new Array:g_aResources
@@ -36,65 +35,49 @@ public plugin_cfg()
 
 public StartCount()
 {
-	g_hConPrintf = RegisterHookChain(RH_Con_Printf, "RH_ConPrintf_Post", 0)
+	g_hConPrintf = RegisterHookChain(RH_Con_Printf, "RH_ConPrintf_Pre", 0)
 
 	g_iType = TypeModel
 	server_cmd("reslist model")
 	server_exec()
-
-	RequestFrame("StopCount")
 
 	set_task(0.2, "CountSound")
 }
 
 public CountSound()
 {
-	EnableHookChain(g_hConPrintf)
-
 	g_iType = TypeSound
 	server_cmd("reslist sound")
 	server_exec()
-
-	RequestFrame("StopCount")
 
 	set_task(0.2, "CountDecal")
 }
 
 public CountDecal()
 {
-	EnableHookChain(g_hConPrintf)
-
 	g_iType = TypeDecal
 	server_cmd("reslist decal")
 	server_exec()
-
-	RequestFrame("StopCount")
 
 	set_task(0.2, "CountGeneric")
 }
 
 public CountGeneric()
 {
-	EnableHookChain(g_hConPrintf)
-
 	g_iType = TypeGeneric
 	server_cmd("reslist generic")
 	server_exec()
-
-	RequestFrame("StopCount")
 
 	set_task(0.2, "CountEvent")
 }
 
 public CountEvent()
 {
-	EnableHookChain(g_hConPrintf)
-
 	g_iType = TypeEvent
 	server_cmd("reslist event")
 	server_exec()
 
-	set_task(0.1, "StopCount")
+	set_task(0.2, "StopCount")
 }
 
 public StopCount()
@@ -102,7 +85,7 @@ public StopCount()
 	DisableHookChain(g_hConPrintf)
 }
 
-public RH_ConPrintf_Post(const szBuffer[])
+public RH_ConPrintf_Pre(const szBuffer[])
 {
 	if(CheckForPattern(szBuffer))
 	{
