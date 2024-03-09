@@ -49,7 +49,6 @@ ReadFile()
 {
 	get_configsdir(g_szConfigsDir, charsmax(g_szConfigsDir))
 	format(g_szConfigsDir, charsmax(g_szConfigsDir), "%s/unprecache_list.ini", g_szConfigsDir)
-	server_print("test: %s", g_szConfigsDir)
 
 	if (!file_exists(g_szConfigsDir))
 		set_fail_state("^"%s^" File not found: ...%s", PLUGIN, g_szConfigsDir)
