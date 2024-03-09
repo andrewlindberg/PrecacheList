@@ -1,27 +1,23 @@
 /* Sublime AMXX Editor v4.2 */
 
-#if defined _precache_list_included
+#if defined _prcache_list_included
 	#endinput
 #endif
-#define _precache_list_included
+#define _prcache_list_included
 
-#define MAX_RESOURCE_SIZE 25
+#define MAX_RESOURCE_SIZE 256
 
-#define VERSION "1.4"
+#define VERSION "2.0"
+
+#include <reapi>
 
 enum _:Data
 {
 	Resource[MAX_RESOURCE_SIZE],
-	Type
-}
-
-enum _:Types
-{
-	TypeModel = 1,
-	TypeSound,
-	TypeDecal,
-	TypeGeneric,
-	TypeEvent
+	ResourceType_t:Type,
+	Size,
+	Flags,
+	Index
 }
 
 enum _:ResourceData
@@ -30,53 +26,71 @@ enum _:ResourceData
     REMOVE
 }
 
+enum _:FileData
+{
+	ResourceName[MAX_RESOURCE_SIZE],
+	TypeResource,
+	NewResource[MAX_RESOURCE_SIZE]
+}
+
 /**
  * Gets the resource name from array.
  *
- * @param iNum		Index of resource in array.
- * @param szItem[]	Buffer to copy resource name.
- * @param iLen		Lenght of buffer.
- * @param iType		Type of the resource. See _:Types Enum
+ * @param iID				Index of resource in array.
+ * @param szItem[]			Buffer to copy resource name.
+ * @param iLen				Lenght of buffer.
+ * @param rtType			Type of the resource. See ResourceType_t: Enum
  * 
- * @type 			Integer
+ * @type 					Integer
  * 
- * @return			1 on succes, -1 on error.
+ * @return					1 on succes, -1 on error.
  */
-native precache_get_item(iNum, szItem[], iLen, iType)
+native precache_get_item(iID, szResource[], iLen, ResourceType_t:rtType)
 
 /**
  * Returns total of the precached resources of a type.
  *
- * @param iType		Type of the resource. See _:Types Enum
+ * @param iType				Type of the resource. See ResourceType_t: Enum
  * 
- * @type 			Integer
+ * @type 					Integer
  * 
- * @return			Total of the precached resources.
+ * @return					Total of the precached resources.
  */
-native precache_get_size(iType)
+native precache_get_size(ResourceType_t:iType)
 
 /**
  * Returns if the resource is precached.
  *
- * @param szItem[]	Buffer to copy resource name.
- * @param iType		Type of the resource. See _:Types Enum
+ * @param szItem[]			Buffer to copy resource name.
+ * @param rtType			Type of the resource. See ResourceType_t: Enum
  * 
- * @type 			Boolean
+ * @type 					Boolean
  * 
- * @return			True if it is, false otherwise.
+ * @return					True if it is, false otherwise.
  */
-native bool:is_resource_precached(szItem[], iType)
+native bool:is_resource_precached(szItem[], ResourceType_t:rtType)
 
 /**
- * Adds a file for removal or replace.
+ * Returns if the resource is unprecached.
  *
- * @param szResource[]      Buffer to store resource name.
- * @param iType             Type of the resource. See _:ResourceData Enum
- * @param bForceChange      If true, the map will be restarted to apply changes instantly
- * @param szNewResource[]   New resource name, if the iType is REPLACE
+ * @param szItem[]			Buffer to copy resource name.
  * 
- * @type                    Boolean
+ * @type 					Boolean
  * 
- * @return                  True if it could be added to file, false otherwise.
+ * @return					True if it is, false otherwise.
+ */
+native bool:is_resource_unprecached(szItem[])
+
+/**
+ * Adds a resource to unprecaching queue.
+ *
+ * @param szItem[]			Buffer to copy resource name.
+ * @param iType				0 = Replace the resource ( implies szNewResource[] ) 1 = Remove the resource 
+ * @param bForceChange		Forces a map change to apply the new resources
+ * @param szNewResource		Sets the new resource name ( imples iType = 1 )
+ * 
+ * @type 					Boolean
+ * 
+ * @return					True if the resource info was successfully written to the file, false otherwise.
  */
 native bool:unprecache_resource(szResource[], iType, bool:bForceChange, szNewResource[] = "")
