@@ -68,7 +68,7 @@ ReadFile()
 		trim(szBuffer)
 		iLine += 1
 
-		if(szBuffer[0] == EOS || szBuffer[0] == ';' || szBuffer[0] == '#' || !szBuffer[0])
+		if(szBuffer[0] == ';' || szBuffer[0] == '#' || !strlen(szBuffer))
 			continue
 
 		if(parse(szBuffer, szTemp[ResourceName], charsmax(szTemp[ResourceName]), szTempInfo, charsmax(szTempInfo), szTemp[NewResource], charsmax(szTemp[NewResource])) < 2)
@@ -87,7 +87,7 @@ ReadFile()
 
 public RH_SV_AddResource_Pre(ResourceType_t:rtType, szResource[], iSize, iFlags, id)
 {
-	if(szResource[0] == EOS || !szResource[0])
+	if(!strlen(szResource))
 		return HC_CONTINUE
 
 	switch(CheckResource(szResource))
